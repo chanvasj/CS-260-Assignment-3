@@ -3,55 +3,70 @@
 template <typename T>
 class Node {
 public:
-  T data;
-  Node<T>* next;
+    T data;
+    Node<T>* next;
 
-  Node(T val) : data(val), next(nullptr) {}
+    Node(T val) : data(val), next(nullptr) {}
 };
 
 template <typename T>
 class Queue {
 private:
-  Node<T>* front;
-  Node<T>* rear;
-  int size;
+    Node<T>* front;
+    Node<T>* rear;
+    int size;
 
 public:
- Queue() : front(nullptr), rear(nullptr), size(0) {}
+    Queue() : front(nullptr), rear(nullptr), size(0) {}
 
-  ~Queue() {
-    while (front != nullptr) {
-      Node<T>* temp = front;
-      front = front->next;
-      delete temp;
+    ~Queue() {
+        while (front != nullptr) {
+            Node<T>* temp = front;
+            front = front->next;
+            delete temp;
+        }
     }
-  }
 
-  void enqueue(T val) {
-    Node<T>* newNode = new Node<T>(val);
-    if (rear == nullptr) {
-      front = rear = newNode;
-    } else {
-      rear->next = newNode;
-      rear = newNode;
+    void enqueue(T val) {
+        Node<T>* newNode = new Node<T>(val);
+        if (rear == nullptr) {
+            front = rear = newNode;
+        } else {
+            rear->next = newNode;
+            rear = newNode;
+        }
+        size++;
     }
-    size++;
-}
 
-T peek() {
-  if (isEmpty()) {
-      throw std::out_of_range("Queue is empty");
-  }
-  return front->data;
-}
+    T dequeue() {
+        if (isEmpty()) {
+            throw std::out_of_range("Queue is empty");
+        }
+        T val = front->data;
+        Node<T>* temp = front;
+        front = front->next;
+        if (front == nullptr) {
+            rear = nullptr;
+        }
+        delete temp;
+        size--;
+        return val;
+    }
 
-bool isEmpty() {
-  return size == 0;
-}
+    T peek() {
+        if (isEmpty()) {
+            throw std::out_of_range("Queue is empty");
+        }
+        return front->data;
+    }
 
-int getSize() {
-  return size;
-  }
+    bool isEmpty() {
+        return size == 0;
+    }
+
+    int getSize() {
+        return size;
+    }
 };
 
 int main() {
@@ -71,6 +86,4 @@ int main() {
 
     return 0;
 }
-
-
 
